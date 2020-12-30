@@ -19,6 +19,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Settings settings = Settings();
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoriteMeals = [];
 
   void _filterMeals(Settings settings) {
     setState(() {
@@ -33,6 +34,16 @@ class _MyAppState extends State<MyApp> {
             !filterVegan &&
             !filterVegetaran;
       }).toList();
+    });
+  }
+
+  void _addFavoriteMeal(Meal meal) {
+    var exist = _favoriteMeals.contains(meal);
+
+    setState(() {
+      exist
+          ? _favoriteMeals.removeWhere((item) => item.id == meal.id)
+          : _favoriteMeals.add(meal);
     });
   }
 
@@ -51,10 +62,10 @@ class _MyAppState extends State<MyApp> {
                 fontFamily: 'RobotoCondensed',
               ))),
       routes: {
-        AppRoutes.HOME: (ctx) => TabsScreen(),
+        AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals),
         AppRoutes.CATEGORIES_MEALS: (ctx) =>
             CategoriesMealScreen(_availableMeals),
-        AppRoutes.MEAl_DETAIL: (ctx) => MealDetailScreen(),
+        AppRoutes.MEAl_DETAIL: (ctx) => MealDetailScreen(_addFavoriteMeal),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(_filterMeals, settings),
       },
       onGenerateRoute: null,

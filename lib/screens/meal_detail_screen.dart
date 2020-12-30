@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
+  final Function(Meal meal) onPressed;
+
+  const MealDetailScreen(this.onPressed);
+
   Widget _createSectionTitle(BuildContext context, String title) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -76,7 +80,7 @@ class MealDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pop(meal.title),
+        onPressed: () => onPressed(meal),
         child: Icon(Icons.star),
       ),
     );
