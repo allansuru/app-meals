@@ -38,13 +38,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _addFavoriteMeal(Meal meal) {
-    var exist = _favoriteMeals.contains(meal);
-
     setState(() {
-      exist
+      _favoriteMeals.contains(meal)
           ? _favoriteMeals.removeWhere((item) => item.id == meal.id)
           : _favoriteMeals.add(meal);
     });
+  }
+
+  bool _isFavorite(Meal meal) {
+    return _favoriteMeals.contains(meal);
   }
 
   @override
@@ -65,7 +67,8 @@ class _MyAppState extends State<MyApp> {
         AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals),
         AppRoutes.CATEGORIES_MEALS: (ctx) =>
             CategoriesMealScreen(_availableMeals),
-        AppRoutes.MEAl_DETAIL: (ctx) => MealDetailScreen(_addFavoriteMeal),
+        AppRoutes.MEAl_DETAIL: (ctx) =>
+            MealDetailScreen(_addFavoriteMeal, _isFavorite),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(_filterMeals, settings),
       },
       onGenerateRoute: null,
